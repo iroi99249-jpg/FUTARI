@@ -61,7 +61,7 @@ create policy "Users can delete their own room messages"
 create or replace function public.set_message_edited_at()
 returns trigger
 language plpgsql
-as $
+as $$
 begin
   new.edited_at = now();
   return new;
