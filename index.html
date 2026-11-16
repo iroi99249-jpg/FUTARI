@@ -86,19 +86,20 @@ const authEmailFor=id=>id.trim().toLowerCase()+"@login.futari.invalid";
 function showApp(){ $("auth").style.display="none";$("app").classList.add("visible");$("mobileNav").style.display="flex";window.scrollTo(0,0);if(typeof loadRoom==="function")loadRoom();}
 $("authForm").addEventListener("submit",async e=>{
  e.preventDefault();
- const id=$("userId").value.trim(),pw=$("password").value;
- if(!/^[a-zA-Z0-9_]{3,20}$/.test(id)){toast("ユーザーIDは半角英数字と _ の3〜20文字で入力してください");return}
+ const id=$("userId").value.trim(),pw=$("password").value,emailInput=$("signupEmail").value.trim();
+ if(mode==="signup"&&!/^[a-zA-Z0-9_]{3,20}$/.test(id)){toast("ユーザーIDは半角英数字と _ の3〜20文字で入力してください");return}
+ if(mode==="signup"&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput)){toast("有効なメールアドレスを入力してください");return}
  if(pw.length<8){toast("パスワードは8文字以上で入力してください");return}
  if(mode==="signup"&&pw!==$("confirmPassword").value){toast("確認用パスワードが一致しません");return}
  if(!supabaseClient){toast("Supabaseの接続設定がまだありません。設定手順を確認してください");return}
  $("submitAuth").disabled=true;$("submitAuth").textContent="処理中...";
  try{
-  const email=authEmailFor(id);
+  const email=mode==="signup"?emailInput:(id.includes("@")?id:authEmailFor(id));
   if(mode==="signup"){
    const {data,error}=await supabaseClient.auth.signUp({email,password:pw,options:{data:{username:id}}});
    if(error)throw error;
    if(data.session){toast("アカウントを作成しました！");showApp();loadRoom();}
-   else{toast("登録を受け付けました。Supabaseでメール確認を無効にしているか確認してください");}
+   else{toast("確認メールを送信しました。メール内のリンクから登録を完了してください。");}
   }else{
    const {data,error}=await supabaseClient.auth.signInWithPassword({email,password:pw});
    if(error)throw error;
@@ -111,9 +112,38 @@ $("authForm").addEventListener("submit",async e=>{
   else toast("認証エラー："+msg.slice(0,110));
  }finally{$("submitAuth").disabled=false;$("submitAuth").textContent=mode==="signup"?"アカウントを作成":"ログイン"}
 });
+
+async function sendIdRecovery(){
+ const email=prompt("登録したメールアドレスを入力してください");if(!email)return;
+ try{const {error}=await supabaseClient.auth.signInWithOtp({email:email.trim(),options:{shouldCreateUser:false,emailRedirectTo:location.origin+location.pathname+"?recover=id"}});
+ if(error)throw error;toast("本人確認リンクをメールに送信しました。リンクを開くとユーザーIDを確認できます。");}
+ catch(e){toast("メールを送信できませんでした："+e.message)}
+}
+async function sendPasswordRecovery(){
+ const email=prompt("登録したメールアドレスを入力してください");if(!email)return;
+ try{const {error}=await supabaseClient.auth.resetPasswordForEmail(email.trim(),{redirectTo:location.origin+location.pathname+"?recover=password"});
+ if(error)throw error;toast("パスワード再設定リンクをメールに送信しました。");}
+ catch(e){toast("メールを送信できませんでした："+e.message)}
+}
+async function revealRecoveredId(){
+ const {data:{user},error}=await supabaseClient.auth.getUser();if(error||!user)return;
+ const {data,error:profileError}=await supabaseClient.from("profiles").select("username").eq("id",user.id).maybeSingle();
+ if(!profileError&&data?.username){alert("あなたのユーザーIDは「"+data.username+"」です。");history.replaceState({},document.title,location.pathname);}
+}
+async function showPasswordRecovery(){
+ const next=prompt("新しいパスワードを入力してください（8文字以上）");if(next===null)return;
+ if(next.length<8){toast("パスワードは8文字以上にしてください");return}
+ const {error}=await supabaseClient.auth.updateUser({password:next});
+ if(error)toast("変更できません："+error.message);else{toast("パスワードを再設定しました。新しいパスワードでログインできます。");history.replaceState({},document.title,location.pathname);}
+}
+$("forgotId").onclick=sendIdRecovery;
+$("forgotPassword").onclick=sendPasswordRecovery;
+
 if(supabaseClient){
  supabaseClient.auth.getSession().then(({data})=>{if(data.session){showApp();loadRoom()}});
- supabaseClient.auth.onAuthStateChange((event,session)=>{if(event==="SIGNED_OUT"){$("app").classList.remove("visible");$("mobileNav").style.display="none";$("auth").style.display="grid"}\n  if(event==="PASSWORD_RECOVERY")showPasswordRecovery();\n  if(event==="SIGNED_IN"&&new URLSearchParams(location.search).get("recover")==="id")revealRecoveredId();});
+ supabaseClient.auth.onAuthStateChange((event,session)=>{if(event==="SIGNED_OUT"){$("app").classList.remove("visible");$("mobileNav").style.display="none";$("auth").style.display="grid"}
+  if(event==="PASSWORD_RECOVERY")showPasswordRecovery();
+  if(event==="SIGNED_IN"&&new URLSearchParams(location.search).get("recover")==="id")revealRecoveredId();});
 }
 
 $("previewBtn").onclick=()=>{$("auth").style.display="none";$("app").classList.add("visible");$("mobileNav").style.display="flex";window.scrollTo(0,0)};
