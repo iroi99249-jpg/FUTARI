@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f5f9fd"><meta name="futari-version" content="0.4.0"><title>ふたりば - ふたりだけの小さな居場所</title>
+<meta name="theme-color" content="#f5f9fd"><meta name="futari-version" content="0.5.0"><title>ふたりば - ふたりだけの小さな居場所</title>
 <style>
 :root{--ink:#34445b;--muted:#8798a9;--line:#e8eff5;--blue:#bde7ff;--pink:#ffd6e7;--bg:#f5f9fd;--shadow:0 12px 35px #5d7d9918}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Yu Gothic",sans-serif}button,input{font:inherit}button{cursor:pointer}
@@ -37,9 +37,9 @@
 </section>
 <div class="app" id="app">
  <aside class="side"><div class="brand"><div class="logo">🏡</div><div><b>ふたりば</b><div class="sub">ふたりだけの小さな居場所</div></div></div><div class="room"><small>YOUR PRIVATE ROOM</small><b id="sidebarRoomName">まだルーム未参加</b><small id="sidebarRoomHint">友達とつながろう</small></div><div class="navlabel">MENU</div><nav class="nav"><button class="active" data-page="home">⌂　ホーム</button><button data-page="room">🏡　秘密基地</button><button data-page="chat">♡　チャット</button><button data-page="album">▧　アルバム</button><button data-page="calendar">▦　カレンダー</button><button data-page="notes">✎　共有ノート</button><button data-page="play">♧　あそび</button></nav><div class="foot">ここは<strong>ふたりだけ</strong>の場所。<br>今日も、のんびり過ごそう。<br><button id="logout" style="margin-top:8px;border:0;background:transparent;color:#7c9ab0;padding:0">← ログアウト（プレビュー）</button></div></aside>
- <main class="main"><header class="top"><div><span class="mobilebrand">🏡 ふたりば　</span><span id="toplabel">YOUR LITTLE PLACE</span></div><div class="version-tools"><span class="version-pill">v0.4.0</span><button class="updates-btn" id="openUpdates" type="button">更新情報</button><div class="profile">🐻</div></div></header>
+ <main class="main"><header class="top"><div><span class="mobilebrand">🏡 ふたりば　</span><span id="toplabel">YOUR LITTLE PLACE</span></div><div class="version-tools"><span class="version-pill">v0.5.0</span><button class="updates-btn" id="openUpdates" type="button">更新情報</button><div class="profile">🐻</div></div></header>
  <section class="page active" id="home"><div class="eyebrow">HELLO, FRIENDS!</div><h2>おかえりなさい ☁️</h2><p class="lead">今日もふたりのペースで、ゆっくりいこう。</p><div class="hero"><div><div class="eyebrow">A LITTLE SECRET BASE</div><h2>ふたりだけの、<br>もうひとつの居場所。</h2><p>話したいときも、何もないときも。<br>ここで一緒に過ごそう。</p></div><div class="heroart">🏡</div></div><div class="grid"><div><div class="card"><h3>♡ 最近のチャット</h3><div class="msg"><div class="face">🐰</div><div><div class="bubble">おはよう！今日なにする？</div><div class="meta">相手 · 09:42</div></div></div><div class="msg" style="justify-content:flex-end"><div><div class="bubble mine">あとで一緒にゲームしよ！</div><div class="meta" style="text-align:right">あなた · 09:45</div></div><div class="face" style="background:#fff0f5">🐻</div></div><button data-go="chat" style="border:0;background:none;color:#65a8d0;font-weight:700">チャットを開く →</button></div><div class="card"><h3>ふたりの最近</h3><p class="lead">📷 アルバムに写真を追加しました</p><p class="lead">📝 共有ノートにメモを残しました</p><p class="lead">🎮 あそびの時間を楽しみました</p></div></div><div><div class="card"><h3>ふたりのステータス</h3><div class="status"><div class="face">🐰</div><div><b>ともだち</b><small>のんびりしてるよ</small></div><span class="online">● ONLINE</span></div><div class="status"><div class="face" style="background:#e6f4ff">🐻</div><div><b>あなた</b><small>今日もよろしく！</small></div><span class="online">● YOU</span></div></div><div class="card"><h3>すぐに使う</h3><div class="quick"><button class="q1" data-go="room"><span>🏡</span><b>秘密基地</b><small>友達とつながる</small></button><button class="q1" data-go="album"><span>📸</span><b>アルバム</b><small>思い出を保存</small></button><button class="q2" data-go="calendar"><span>🗓️</span><b>カレンダー</b><small>予定を共有</small></button><button class="q3" data-go="notes"><span>📒</span><b>ノート</b><small>メモを書こう</small></button><button class="q4" data-go="play"><span>🎲</span><b>あそび</b><small>一緒に楽しもう</small></button></div></div></div></div></section>
- <section class="page" id="chat"><div class="eyebrow">OUR CONVERSATION</div><h2>チャット 💌</h2><p class="lead">何気ないことも、ここで話そう。</p><div class="chatbox"><div class="chathead">🐰 ともだち　<small style="color:#9aa8b5;font-weight:400">ふたりの秘密基地</small></div><div class="chatmsgs" id="messages"><div class="chatline">やっほー！今日は何してた？</div><div class="chatline self">ちょっとアプリを作ってた！</div><div class="chatline">いいね！完成が楽しみ！</div></div><form class="compose" id="chatform"><input id="chatinput" placeholder="メッセージを入力..." autocomplete="off"><button>送信</button></form></div><p class="lead">※UI確認用デモです。送信内容はこの画面内だけに表示されます。</p></section>
+ <section class="page" id="chat"><div class="eyebrow">OUR CONVERSATION</div><h2>チャット 💌</h2><p class="lead">ふたりだけのリアルタイムチャット。</p><div class="chatbox"><div class="chathead" id="chatHead">🏡 秘密基地 <small style="color:#9aa8b5;font-weight:400">接続待ち</small></div><div class="chatmsgs" id="messages" aria-live="polite"><div class="lead" id="chatNotice">ルーム情報を確認しています...</div></div><form class="compose" id="chatform"><input id="chatinput" maxlength="2000" placeholder="メッセージを入力..." autocomplete="off" disabled><button id="chatSend" disabled>送信</button></form></div><p class="lead" id="chatFoot">ルームを作成するとチャットを利用できます。友達が参加すると会話がリアルタイムで届きます。</p></section>
  <section class="page" id="room">
  <div class="eyebrow">OUR PRIVATE ROOM</div><h2>ふたりの秘密基地 🏡</h2>
  <p class="lead">ルームを作るか、友達から届いた招待コードで参加しよう。</p>
@@ -68,7 +68,7 @@
  <section class="page" id="play"><div class="eyebrow">LET'S HAVE FUN</div><h2>あそび 🎲</h2><div class="placeholder"><div class="art">🎮</div><h3>あそびの部屋</h3><p>質問ゲームやルーレット、ミニゲームなどを追加する予定です。</p></div></section>
  </main>
 </div>
-<div class="updates-modal" id="updatesModal" role="dialog" aria-modal="true" aria-labelledby="updatesTitle"><div class="updates-card"><div class="updates-head"><div><div class="eyebrow">FUTARI CHANGELOG</div><h2 id="updatesTitle" style="margin:5px 0">更新情報</h2></div><button class="updates-close" id="closeUpdates" type="button" aria-label="閉じる">×</button></div><div class="update-entry"><div class="update-date">2026.11.17 · 最新版</div><div class="update-version">v0.4.0 — ふたりの秘密基地</div><ul><li>秘密基地（ルーム）画面を追加</li><li>6桁の招待コード発行・コピーに対応</li><li>招待コードでルームに参加する機能を追加</li><li>1アカウント1ルーム・最大2人の制限を追加</li><li>ルーム情報の取得と参加人数の表示に対応</li><li>画面上部にバージョン表示と更新情報を追加</li></ul></div><div class="update-entry"><div class="update-date">2026.11.16</div><div class="update-version">v0.3.0 — アカウント機能</div><ul><li>Supabase Authによるユーザー登録・ログイン</li><li>ユーザーIDとパスワードでの認証に対応</li><li>プロフィール用データベースを追加</li></ul></div><div class="update-entry"><div class="update-date">2026.11.16</div><div class="update-version">v0.1.0 — UIプレビュー</div><ul><li>ホーム・チャット・アルバム・カレンダーなどの基本画面を作成</li><li>スマートフォンとPC向けのレスポンシブUI</li></ul></div><p class="hint">表示中のバージョンが新しくならない場合は、ページを再読み込みしてください。</p></div></div><nav class="mobile" id="mobileNav"><button class="active" data-page="home"><span>⌂</span>ホーム</button><button data-page="room"><span>🏡</span>ルーム</button><button data-page="chat"><span>♡</span>チャット</button><button data-page="album"><span>▧</span>アルバム</button><button data-page="calendar"><span>▦</span>予定</button><button data-page="play"><span>♧</span>あそび</button></nav><div class="toast" id="toast"></div>
+<div class="updates-modal" id="updatesModal" role="dialog" aria-modal="true" aria-labelledby="updatesTitle"><div class="updates-card"><div class="updates-head"><div><div class="eyebrow">FUTARI CHANGELOG</div><h2 id="updatesTitle" style="margin:5px 0">更新情報</h2></div><button class="updates-close" id="closeUpdates" type="button" aria-label="閉じる">×</button></div><div class="update-entry"><div class="update-date">2026.11.17 · 最新版</div><div class="update-version">v0.5.0 — リアルタイムチャット</div><ul><li>Supabaseを使ったメッセージ送受信</li><li>同じルームの相手にリアルタイムで反映</li><li>送信者・時刻の表示</li><li>ルームメンバー以外は読めないRLS制御</li></ul></div><div class="update-entry"><div class="update-date">2026.11.17</div><div class="update-version">v0.4.0 — ふたりの秘密基地</div><ul><li>秘密基地（ルーム）画面を追加</li><li>6桁の招待コード発行・コピーに対応</li><li>招待コードでルームに参加する機能を追加</li><li>1アカウント1ルーム・最大2人の制限を追加</li><li>ルーム情報の取得と参加人数の表示に対応</li><li>画面上部にバージョン表示と更新情報を追加</li></ul></div><div class="update-entry"><div class="update-date">2026.11.16</div><div class="update-version">v0.3.0 — アカウント機能</div><ul><li>Supabase Authによるユーザー登録・ログイン</li><li>ユーザーIDとパスワードでの認証に対応</li><li>プロフィール用データベースを追加</li></ul></div><div class="update-entry"><div class="update-date">2026.11.16</div><div class="update-version">v0.1.0 — UIプレビュー</div><ul><li>ホーム・チャット・アルバム・カレンダーなどの基本画面を作成</li><li>スマートフォンとPC向けのレスポンシブUI</li></ul></div><p class="hint">表示中のバージョンが新しくならない場合は、ページを再読み込みしてください。</p></div></div><nav class="mobile" id="mobileNav"><button class="active" data-page="home"><span>⌂</span>ホーム</button><button data-page="room"><span>🏡</span>ルーム</button><button data-page="chat"><span>♡</span>チャット</button><button data-page="album"><span>▧</span>アルバム</button><button data-page="calendar"><span>▦</span>予定</button><button data-page="play"><span>♧</span>あそび</button></nav><div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./supabase-config.js"></script>
 <script>
@@ -79,7 +79,7 @@ $("loginTab").onclick=()=>setMode("login");$("signupTab").onclick=()=>setMode("s
 $("togglePassword").onclick=()=>{const p=$("password");p.type=p.type==="password"?"text":"password";$("togglePassword").textContent=p.type==="password"?"表示":"隠す"};
 function toast(s){const t=$("toast");t.textContent=s;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2800)}
 let supabaseClient=null;
-const config=window.FUTARI_CONFIG||{};
+const config=window.FUTARI_CONFIG||{};let activeRoomId=null;let chatChannel=null;let currentUserId=null;
 const isSupabaseConfigured=()=>Boolean(config.url&&config.anonKey&&!config.url.includes("YOUR_")&&!config.anonKey.includes("YOUR_"));
 if(isSupabaseConfigured()&&window.supabase?.createClient){supabaseClient=window.supabase.createClient(config.url,config.anonKey);$("previewBtn").textContent="UIプレビューを開く";}
 const authEmailFor=id=>id.trim().toLowerCase()+"@login.futari.invalid";
@@ -121,14 +121,17 @@ $("logout").onclick=async()=>{if(supabaseClient){const {error}=await supabaseCli
 
 async function loadRoom(){
  if(!supabaseClient)return;
+ const {data:userData}=await supabaseClient.auth.getUser();currentUserId=userData?.user?.id||null;
  const {data,error}=await supabaseClient.rpc("get_my_room");
  if(error){$("roomStatus").textContent="ルーム情報を取得できません："+error.message;return}
  const room=data?.[0];
  if(!room){
+  activeRoomId=null;stopChatRealtime();setChatUnavailable("先に秘密基地を作成するか、招待コードで参加してください。");
   $("roomStatus").textContent="まだルームに参加していません。作成するか、招待コードで参加してください。";
   $("roomDetails").hidden=true;$("sidebarRoomName").textContent="まだルーム未参加";$("sidebarRoomHint").textContent="友達とつながろう";return;
  }
- $("roomStatus").textContent="秘密基地の準備ができています！";
+ activeRoomId=room.room_id; $("roomStatus").textContent="秘密基地の準備ができています！";
+ if(document.getElementById("chat").classList.contains("active"))loadChat();
  $("roomDetails").hidden=false;$("inviteCode").textContent=room.invite_code;
  $("roomMemberCount").textContent="参加人数："+room.member_count+" / 2人";
  $("partnerName").textContent=room.partner_username?"友達："+room.partner_username:(room.member_count===1?"友達の参加を待っています":"");
@@ -154,8 +157,34 @@ $("copyInvite").onclick=async()=>{try{await navigator.clipboard.writeText($("inv
 
 $("openUpdates").onclick=()=> $("updatesModal").classList.add("open");$("closeUpdates").onclick=()=> $("updatesModal").classList.remove("open");$("updatesModal").addEventListener("click",e=>{if(e.target.id==="updatesModal")$("updatesModal").classList.remove("open")});document.addEventListener("keydown",e=>{if(e.key==="Escape")$("updatesModal").classList.remove("open")});
 const names={home:"YOUR LITTLE PLACE",room:"OUR PRIVATE ROOM",chat:"OUR CONVERSATION",album:"OUR MEMORIES",calendar:"OUR PLANS",notes:"SHARED NOTES",play:"LET'S HAVE FUN"};
-function go(p){document.querySelectorAll(".page").forEach(x=>x.classList.toggle("active",x.id===p));document.querySelectorAll("[data-page]").forEach(x=>x.classList.toggle("active",x.dataset.page===p));$("toplabel").textContent=names[p];window.scrollTo({top:0,behavior:"smooth"})}
+function go(p){if(p==="chat")loadChat();document.querySelectorAll(".page").forEach(x=>x.classList.toggle("active",x.id===p));document.querySelectorAll("[data-page]").forEach(x=>x.classList.toggle("active",x.dataset.page===p));$("toplabel").textContent=names[p];window.scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll("[data-page]").forEach(x=>x.addEventListener("click",()=>go(x.dataset.page)));document.querySelectorAll("[data-go]").forEach(x=>x.addEventListener("click",()=>go(x.dataset.go)));
-$("chatform").addEventListener("submit",e=>{e.preventDefault();let i=$("chatinput"),v=i.value.trim();if(!v)return;let d=document.createElement("div");d.className="chatline self";d.textContent=v;$("messages").append(d);i.value=""});
+
+function stopChatRealtime(){if(chatChannel&&supabaseClient){supabaseClient.removeChannel(chatChannel);chatChannel=null}}
+function setChatUnavailable(message){$("messages").replaceChildren();const p=document.createElement("div");p.className="lead";p.textContent=message;$("messages").append(p);$("chatinput").disabled=true;$("chatSend").disabled=true;$("chatNotice")?.remove()}
+function renderMessages(rows){
+ const box=$("messages");box.replaceChildren();
+ if(!rows?.length){const p=document.createElement("div");p.className="lead";p.textContent="まだメッセージはありません。最初のメッセージを送ってみよう！";box.append(p);return}
+ rows.forEach(m=>{const wrap=document.createElement("div");wrap.style.display="flex";wrap.style.flexDirection="column";wrap.style.alignItems=m.sender_id===currentUserId?"flex-end":"flex-start";const b=document.createElement("div");b.className="chatline"+(m.sender_id===currentUserId?" self":"");b.textContent=m.body;const meta=document.createElement("small");meta.className="meta";meta.textContent=new Date(m.created_at).toLocaleString("ja-JP",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"});wrap.append(b,meta);box.append(wrap)});
+ box.scrollTop=box.scrollHeight;
+}
+async function loadChat(){
+ if(!supabaseClient||!activeRoomId){setChatUnavailable("先に秘密基地を作成するか、招待コードで参加してください。");return}
+ $("chatHead").textContent="🏡 ふたりの秘密基地";$("chatFoot").textContent="同じルームのメンバーにメッセージがリアルタイムで届きます。";
+ $("chatinput").disabled=false;$("chatSend").disabled=false;
+ const roomId=activeRoomId;stopChatRealtime();$("messages").replaceChildren();const loading=document.createElement("div");loading.className="lead";loading.textContent="メッセージを読み込み中...";$("messages").append(loading);
+ const {data:rows,error}=await supabaseClient.from("messages").select("id,room_id,sender_id,body,created_at").eq("room_id",roomId).order("created_at",{ascending:true}).limit(100);
+ if(error){setChatUnavailable("メッセージを読み込めません："+error.message);return}
+ if(activeRoomId!==roomId)return;renderMessages(rows);
+ chatChannel=supabaseClient.channel("futari-chat-"+roomId).on("postgres_changes",{event:"INSERT",schema:"public",table:"messages",filter:"room_id=eq."+roomId},payload=>{
+  const msg=payload.new;const existing=Array.from($("messages").children).some(el=>el.dataset?.messageId===String(msg.id));
+  if(existing)return;const box=$("messages");const empty=box.querySelector(".lead");if(empty)empty.remove();
+  const wrap=document.createElement("div");wrap.dataset.messageId=String(msg.id);wrap.style.display="flex";wrap.style.flexDirection="column";wrap.style.alignItems=msg.sender_id===currentUserId?"flex-end":"flex-start";
+  const b=document.createElement("div");b.className="chatline"+(msg.sender_id===currentUserId?" self":"");b.textContent=msg.body;
+  const meta=document.createElement("small");meta.className="meta";meta.textContent=new Date(msg.created_at).toLocaleString("ja-JP",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"});wrap.append(b,meta);box.append(wrap);box.scrollTop=box.scrollHeight;
+ }).subscribe(status=>{if(status==="CHANNEL_ERROR"||status==="TIMED_OUT")toast("リアルタイム接続に失敗しました。再読み込みしてください")});
+}
+$("chatform").addEventListener("submit",async e=>{e.preventDefault();const input=$("chatinput"),body=input.value.trim();if(!body||!activeRoomId||!currentUserId)return;const send=$("chatSend");send.disabled=true;try{const {error}=await supabaseClient.from("messages").insert({room_id:activeRoomId,sender_id:currentUserId,body});if(error)throw error;input.value=""}catch(err){toast("送信できません："+err.message)}finally{send.disabled=false;input.focus()}});
+
 </script>
 </body></html>
