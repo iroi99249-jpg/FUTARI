@@ -6,8 +6,12 @@ create table if not exists public.messages (
   room_id uuid not null references public.rooms(id) on delete cascade,
   sender_id uuid not null references auth.users(id) on delete cascade,
   body text not null check (char_length(body) between 1 and 2000),
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  edited_at timestamptz
 );
+
+-- Safe migration for projects where the messages table already exists.
+alter table public.messages add column if not exists edited_at timestamptz;
 
 create index if not exists messages_room_created_idx
   on public.messages (room_id, created_at);
@@ -29,7 +33,44 @@ create policy "Room members can send as themselves"
     and public.is_room_member(room_id)
   );
 
--- Enable Supabase Realtime for message inserts.
+drop policy if exists "Users can edit their own room messages" on public.messages;
+create policy "Users can edit their own room messages"
+  on public.messages for update
+  to authenticated
+  using (
+    sender_id = auth.uid()
+    and public.is_room_member(room_id)
+  )
+  with check (
+    sender_id = auth.uid()
+    and public.is_room_member(room_id)
+  );
+
+drop policy if exists "Users can delete their own room messages" on public.messages;
+create policy "Users can delete their own room messages"
+  on public.messages for delete
+  to authenticated
+  using (
+    sender_id = auth.uid()
+    and public.is_room_member(room_id)
+  );
+
+create or replace function public.set_message_edited_at()
+returns trigger
+language plpgsql
+as $
+begin
+  new.edited_at = now();
+  return new;
+end;
+$;
+
+drop trigger if exists messages_set_edited_at on public.messages;
+create trigger messages_set_edited_at
+  before update on public.messages
+  for each row execute function public.set_message_edited_at();
+
+-- Enable Supabase Realtime for message inserts, edits, and deletions.
 do $$
 begin
   alter publication supabase_realtime add table public.messages;
@@ -40,5 +81,5 @@ exception
 end;
 $$;
 
-grant select, insert on public.messages to authenticated;
+grant select, insert, update, delete on public.messages to authenticated;
 grant usage, select on sequence public.messages_id_seq to authenticated;
