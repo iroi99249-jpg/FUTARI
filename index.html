@@ -188,7 +188,8 @@ $("saveProfile").onclick=async()=>{
  }catch(err){toast("保存できません："+err.message)}
  finally{b.disabled=false;b.textContent="プロフィールを保存"}
 };
-\n// Home dashboard: real room status and latest chat messages.
+
+// Home dashboard: real room status and latest chat messages.
 function stopHomeRealtime(){if(homeChannel&&supabaseClient){supabaseClient.removeChannel(homeChannel);homeChannel=null}}
 function relativeTime(value){
  const date=new Date(value);if(Number.isNaN(date.getTime()))return "";
