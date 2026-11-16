@@ -26,10 +26,10 @@
   <p class="intro" id="authIntro">ユーザーIDでログインして、ふたりの場所へ。</p>
   <div class="tabs"><button id="loginTab" class="active" type="button">ログイン</button><button id="signupTab" type="button">新規登録</button></div>
   <form id="authForm" novalidate>
-   <div class="field"><label for="userId">ユーザーID</label><input id="userId" name="userId" autocomplete="username" placeholder="例：futari_friend" minlength="3" maxlength="20" required><div class="hint">3〜20文字の半角英数字・アンダースコア</div></div>
+   <div class="field"><label for="userId">ユーザーID / メールアドレス</label><input id="userId" name="userId" autocomplete="username" placeholder="ユーザーID または メールアドレス" required><div class="hint" id="loginIdHint">以前のアカウントはユーザーID、新しいアカウントは登録メールアドレスでログインできます。</div></div><div class="field" id="signupEmailField" hidden><label for="signupEmail">復旧用メールアドレス</label><input id="signupEmail" type="email" autocomplete="email" placeholder="example@gmail.com"><div class="hint">ID確認・パスワード再設定に使用します。</div></div>
    <div class="field"><label for="password">パスワード</label><div class="password-box"><input id="password" name="password" type="password" autocomplete="current-password" placeholder="パスワードを入力" required><button class="showpass" type="button" id="togglePassword">表示</button></div><div class="hint">8文字以上を推奨</div></div>
    <div class="field" id="confirmField" hidden><label for="confirmPassword">パスワード（確認）</label><div class="password-box"><input id="confirmPassword" type="password" autocomplete="new-password" placeholder="もう一度入力"></div></div>
-   <button class="primary" id="submitAuth" type="submit">ログイン</button>
+   <button class="primary" id="submitAuth" type="submit">ログイン</button><div style="display:flex;justify-content:space-between;gap:10px;margin-top:13px"><button type="button" id="forgotId" style="border:0;background:none;color:#78a4c0;font-size:11px;font-weight:800">IDを忘れた場合</button><button type="button" id="forgotPassword" style="border:0;background:none;color:#78a4c0;font-size:11px;font-weight:800">パスワードを忘れた場合</button></div>
   </form>
   <button class="preview" id="previewBtn" type="button">認証接続前のUIプレビューを見る</button>
   <p class="fine">Supabaseの接続設定が完了すると、実際にアカウント登録・ログインできます。ユーザーIDで登録し、パスワードはSupabase Authが安全に管理します。</p>
@@ -74,7 +74,7 @@
 <script>
 let mode="login";
 const $=id=>document.getElementById(id);
-function setMode(next){mode=next;const signup=mode==="signup";$("loginTab").classList.toggle("active",!signup);$("signupTab").classList.toggle("active",signup);$("confirmField").hidden=!signup;$("confirmPassword").required=signup;$("authTitle").textContent=signup?"ふたりばへようこそ 🌷":"おかえりなさい ☁️";$("authIntro").textContent=signup?"ユーザーIDを決めて、ふたりの場所を作ろう。":"ユーザーIDでログインして、ふたりの場所へ。";$("submitAuth").textContent=signup?"アカウントを作成":"ログイン";$("password").autocomplete=signup?"new-password":"current-password"}
+function setMode(next){mode=next;const signup=mode==="signup";$("loginTab").classList.toggle("active",!signup);$("signupTab").classList.toggle("active",signup);$("confirmField").hidden=!signup;$("confirmPassword").required=signup;$("signupEmailField").hidden=!signup;$("signupEmail").required=signup;$("forgotId").hidden=signup;$("forgotPassword").hidden=signup;$("authTitle").textContent=signup?"ふたりばへようこそ 🌷":"おかえりなさい ☁️";$("authIntro").textContent=signup?"ユーザーIDと復旧用メールアドレスを登録しよう。":"ユーザーIDまたはメールアドレスでログインできます。";$("submitAuth").textContent=signup?"アカウントを作成":"ログイン";$("password").autocomplete=signup?"new-password":"current-password"}
 $("loginTab").onclick=()=>setMode("login");$("signupTab").onclick=()=>setMode("signup");
 $("togglePassword").onclick=()=>{const p=$("password");p.type=p.type==="password"?"text":"password";$("togglePassword").textContent=p.type==="password"?"表示":"隠す"};
 function toast(s){const t=$("toast");t.textContent=s;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2800)}
@@ -107,13 +107,13 @@ $("authForm").addEventListener("submit",async e=>{
  }catch(err){
   const msg=String(err.message||"");
   if(/already registered|already exists|duplicate key/i.test(msg))toast("このユーザーIDは既に使われています");
-  else if(/invalid login credentials/i.test(msg))toast("ユーザーIDまたはパスワードが違います");
+  else if(/invalid login credentials/i.test(msg))toast("ID・メールアドレスまたはパスワードが違います");
   else toast("認証エラー："+msg.slice(0,110));
  }finally{$("submitAuth").disabled=false;$("submitAuth").textContent=mode==="signup"?"アカウントを作成":"ログイン"}
 });
 if(supabaseClient){
  supabaseClient.auth.getSession().then(({data})=>{if(data.session){showApp();loadRoom()}});
- supabaseClient.auth.onAuthStateChange((event,session)=>{if(event==="SIGNED_OUT"){$("app").classList.remove("visible");$("mobileNav").style.display="none";$("auth").style.display="grid"}});
+ supabaseClient.auth.onAuthStateChange((event,session)=>{if(event==="SIGNED_OUT"){$("app").classList.remove("visible");$("mobileNav").style.display="none";$("auth").style.display="grid"}\n  if(event==="PASSWORD_RECOVERY")showPasswordRecovery();\n  if(event==="SIGNED_IN"&&new URLSearchParams(location.search).get("recover")==="id")revealRecoveredId();});
 }
 
 $("previewBtn").onclick=()=>{$("auth").style.display="none";$("app").classList.add("visible");$("mobileNav").style.display="flex";window.scrollTo(0,0)};
