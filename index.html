@@ -152,7 +152,7 @@ $("joinRoom").onclick=async()=>{
 };
 $("copyInvite").onclick=async()=>{try{await navigator.clipboard.writeText($("inviteCode").textContent);toast("招待コードをコピーしました")}catch(e){toast("コードを長押ししてコピーしてください")}};
 
-const names={home:"YOUR LITTLE PLACE",chat:"OUR CONVERSATION",album:"OUR MEMORIES",calendar:"OUR PLANS",notes:"SHARED NOTES",play:"LET'S HAVE FUN"};
+const names={home:"YOUR LITTLE PLACE",room:"OUR PRIVATE ROOM",chat:"OUR CONVERSATION",album:"OUR MEMORIES",calendar:"OUR PLANS",notes:"SHARED NOTES",play:"LET'S HAVE FUN"};
 function go(p){document.querySelectorAll(".page").forEach(x=>x.classList.toggle("active",x.id===p));document.querySelectorAll("[data-page]").forEach(x=>x.classList.toggle("active",x.dataset.page===p));$("toplabel").textContent=names[p];window.scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll("[data-page]").forEach(x=>x.addEventListener("click",()=>go(x.dataset.page)));document.querySelectorAll("[data-go]").forEach(x=>x.addEventListener("click",()=>go(x.dataset.go)));
 $("chatform").addEventListener("submit",e=>{e.preventDefault();let i=$("chatinput"),v=i.value.trim();if(!v)return;let d=document.createElement("div");d.className="chatline self";d.textContent=v;$("messages").append(d);i.value=""});
