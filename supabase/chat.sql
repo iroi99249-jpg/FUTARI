@@ -66,7 +66,7 @@ begin
   new.edited_at = now();
   return new;
 end;
-$;
+$$;
 
 drop trigger if exists messages_set_edited_at on public.messages;
 create trigger messages_set_edited_at
