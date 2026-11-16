@@ -19,3 +19,15 @@
 - Synthetic email login means password reset by email is not available yet. Add a verified recovery email flow before treating this as a production account system.
 - The public anon key is not a secret; database safety depends on RLS. Never disable RLS or add broad public policies.
 - Room invitation, two-member access control, and real-time chat are not implemented yet.
+
+
+## Private two-person room setup
+After the initial `supabase/schema.sql` has been executed, run `supabase/rooms.sql` in the Supabase SQL Editor.
+This adds:
+- One private room per account
+- Six-character invitation codes
+- A strict two-member room capacity
+- Server-side RPC checks for room creation and joining
+- RLS-protected room and membership reads
+
+The UI includes a "秘密基地" page for creating a room, copying its invitation code, and joining with a friend's code. Both users must already have FUTARI accounts. Direct client writes to room tables are intentionally blocked; use the provided RPC functions.
