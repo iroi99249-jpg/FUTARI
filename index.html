@@ -142,8 +142,8 @@ $("forgotPassword").onclick=sendPasswordRecovery;
 if(supabaseClient){
  supabaseClient.auth.getSession().then(({data})=>{if(data.session){showApp();loadRoom()}});
  supabaseClient.auth.onAuthStateChange((event,session)=>{if(event==="SIGNED_OUT"){$("app").classList.remove("visible");$("mobileNav").style.display="none";$("auth").style.display="grid"}
-  if(event==="PASSWORD_RECOVERY")showPasswordRecovery();
-  if(event==="SIGNED_IN"&&new URLSearchParams(location.search).get("recover")==="id")revealRecoveredId();});
+  if(event==="PASSWORD_RECOVERY")setTimeout(showPasswordRecovery,0);
+  if(event==="SIGNED_IN"&&new URLSearchParams(location.search).get("recover")==="id")setTimeout(revealRecoveredId,0);});
 }
 
 $("previewBtn").onclick=()=>{$("auth").style.display="none";$("app").classList.add("visible");$("mobileNav").style.display="flex";window.scrollTo(0,0)};
@@ -215,7 +215,8 @@ $("linkRecoveryEmail").onclick=async()=>{
  }catch(e){toast("登録できません："+e.message)}
  finally{b.disabled=false;b.textContent="メールアドレスを登録・変更"}
 };
-\n$("closeProfile").onclick=()=>$("profileModal").classList.remove("open");
+
+$("closeProfile").onclick=()=>$("profileModal").classList.remove("open");
 $("profileModal").addEventListener("click",e=>{if(e.target.id==="profileModal")$("profileModal").classList.remove("open")});
 $("avatarOptions").addEventListener("click",e=>{const b=e.target.closest("[data-avatar]");if(!b)return;selectedAvatar=b.dataset.avatar;updateProfileUI()});
 $("saveProfile").onclick=async()=>{
