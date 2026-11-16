@@ -140,7 +140,7 @@ $("forgotId").onclick=sendIdRecovery;
 $("forgotPassword").onclick=sendPasswordRecovery;
 
 if(supabaseClient){
- supabaseClient.auth.getSession().then(({data})=>{if(data.session){showApp();loadRoom()}});
+ supabaseClient.auth.getSession().then(({data})=>{if(data.session){showApp();loadRoom();const recovery=new URLSearchParams(location.search).get("recover");if(recovery==="id")setTimeout(revealRecoveredId,0);if(recovery==="password")setTimeout(showPasswordRecovery,0)}});
  supabaseClient.auth.onAuthStateChange((event,session)=>{if(event==="SIGNED_OUT"){$("app").classList.remove("visible");$("mobileNav").style.display="none";$("auth").style.display="grid"}
   if(event==="PASSWORD_RECOVERY")setTimeout(showPasswordRecovery,0);
   if(event==="SIGNED_IN"&&new URLSearchParams(location.search).get("recover")==="id")setTimeout(revealRecoveredId,0);});
