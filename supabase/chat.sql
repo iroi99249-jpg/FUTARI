@@ -18,6 +18,9 @@ create index if not exists messages_room_created_idx
 
 alter table public.messages enable row level security;
 
+-- Include old row values in Realtime UPDATE/DELETE events.
+alter table public.messages replica identity full;
+
 drop policy if exists "Room members can read messages" on public.messages;
 create policy "Room members can read messages"
   on public.messages for select
