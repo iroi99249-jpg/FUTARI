@@ -31,3 +31,10 @@ This adds:
 - RLS-protected room and membership reads
 
 The UI includes a "秘密基地" page for creating a room, copying its invitation code, and joining with a friend's code. Both users must already have FUTARI accounts. Direct client writes to room tables are intentionally blocked; use the provided RPC functions.
+
+
+## Real-time chat setup
+After running `schema.sql` and `rooms.sql`, run `supabase/chat.sql` in Supabase SQL Editor.
+This creates the room-scoped messages table, enables RLS so only room members can read and send messages as themselves, and adds the table to the `supabase_realtime` publication.
+The chat page loads the latest 100 messages and subscribes to new inserts for the active room.
+A room must exist before chat can be used. A second account is needed to verify two-way messaging.
